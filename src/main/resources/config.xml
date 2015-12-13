@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+   <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+      <property name="customEditors">
+         <map>
+            <entry key="java.time.LocalDateTime" value="net.tradelib.misc.CustomLocalDateTimeEditor" />
+         </map>
+      </property>
+   </bean>
+   
+   <bean id="dbUrl" class="java.lang.String">
+      <constructor-arg>
+         <value>${db.url}</value>
+      </constructor-arg>
+   </bean>
+   
+   <bean id="fileLog" class="java.lang.Boolean">
+      <constructor-arg>
+         <value>${file.log:true}</value>
+      </constructor-arg>
+   </bean>
+   
+   <bean id="consoleLog" class="java.lang.Boolean">
+      <constructor-arg>
+         <value>${console.log:true}</value>
+      </constructor-arg>
+   </bean>
+   
+   <bean id="emailEnabled" class="java.lang.Boolean">
+      <constructor-arg>
+         <value>${email.enabled:false}</value>
+      </constructor-arg>
+   </bean>
+   
+   <bean id="emailUser" class="java.lang.String">
+      <constructor-arg>
+         <value>${email.user}</value>
+      </constructor-arg>
+   </bean>
+   
+   <bean id="emailPass" class="java.lang.String">
+      <constructor-arg>
+         <value>${email.pass}</value>
+      </constructor-arg>
+   </bean>
+   
+   <bean id="emailFrom" class="java.lang.String">
+      <constructor-arg>
+         <value>${email.from}</value>
+      </constructor-arg>
+   </bean>
+   
+   <bean id="emailRecipients" class="java.lang.String">
+      <constructor-arg>
+         <value>${email.recipients}</value>
+      </constructor-arg>
+   </bean>
+
+   <bean id="strategy" class="net.tradelib.simplemomentum.SimpleMomentum" autowire="byName">
+      <property name="lookback">
+         <value>${lookback:21}</value>
+      </property>
+      <property name="minLen">
+         <value>${min.len:100}</value>
+      </property>
+      <property name="cleanupPositions">
+         <value>${cleanup.positions:true}</value>
+      </property>
+      
+      <property name="broker">
+         <bean id="historicalReplay" class="net.tradelib.core.HistoricalReplay" autowire="byName">
+            <property name="dataFeed">
+               <bean id="dataFeed" class="net.tradelib.core.MySQLDataFeed" autowire="byName">
+                  <property name="feedStart">
+                     <value>${feed.start:null}</value>
+                  </property>
+                  
+                  <property name="feedStop">
+                     <value>${feed.stop:null}</value>
+                  </property>
+                  
+                  <property name="dbUrl">
+                     <value>${db.url}</value>
+                  </property>
+                  
+                  <property name="barsTable">
+                     <value>${bars.table}</value>
+                  </property>
+                  
+                  <property name="instrumentsTable">
+                     <value>${instruments.table}</value>
+                  </property>
+                  
+                  <property name="instrumentsVariationsTable">
+                     <value>${instruments.variations.table:null}</value>
+                  </property>
+                  
+                  <property name="instrumentProvider">
+                     <value>${instrument.provider}</value>
+                  </property>
+                  
+                  <property name="defaultInstrument">
+                     <value>STOCK</value>
+                  </property>
+               </bean>
+            </property>
+         </bean>
+      </property>
+      
+      <property name="dbUrl">
+         <value>${db.url}</value>
+      </property>
+      
+      <property name="name">
+         <value>${strategy.name}</value>
+      </property>
+      
+      <property name="tradingStart">
+         <value>${trading.start}:1990-01-01</value>
+      </property>
+      
+      <property name="tradingStop">
+         <value>${trading.stop}:2100-01-01</value>
+      </property>
+   </bean>
+
+</beans>
