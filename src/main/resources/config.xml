@@ -73,7 +73,7 @@
       <property name="broker">
          <bean id="historicalReplay" class="net.tradelib.core.HistoricalReplay" autowire="byName">
             <property name="dataFeed">
-               <bean id="dataFeed" class="net.tradelib.core.MySQLDataFeed" autowire="byName">
+               <bean id="dataFeed" class="net.tradelib.core.SQLDataFeed" autowire="byName">
                   <property name="feedStart">
                      <value>${feed.start:null}</value>
                   </property>
@@ -104,6 +104,10 @@
                   
                   <property name="defaultInstrument">
                      <value>STOCK</value>
+                  </property>
+                  
+                  <property name="dbFlavor">
+                     <value>${db.flavor}</value>
                   </property>
                </bean>
             </property>
